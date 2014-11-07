@@ -7,17 +7,19 @@
 //
 
 #import "StationsListViewController.h"
+#import "MapViewController.h"
 #import "DivvyBike.h"
 
 #define kURL @"http://www.bayareabikeshare.com/stations/json"
 
-@interface StationsListViewController () <UITabBarDelegate, UITableViewDataSource, CLLocationManagerDelegate>
+@interface StationsListViewController () <UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate>
 
 @property CLLocationManager *locationManager;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property CLLocation *location;
 @property NSMutableArray *divvyBikes;
+@property DivvyBike *myLocationDivvy;
 
 @end
 
@@ -29,8 +31,9 @@
     self.locationManager = [[CLLocationManager alloc] init];
     [self.locationManager requestAlwaysAuthorization];
     self.locationManager.delegate = self;
+    [self.locationManager startUpdatingLocation];
     [self loadJSON];
-    
+
 }
 
 
@@ -43,16 +46,14 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DivvyBike *currentDivvyBike = self.divvyBikes[indexPath.row];
-    if ([currentDivvyBike.location isEqual:self.location])
-    {
-        return nil;
-    }
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     DivvyBike *divvyBike = self.divvyBikes[indexPath.row];
-    cell.textLabel.text = divvyBike.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ bikes", divvyBike.availableBikes];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+
+    if (![divvyBike.name isEqualToString:@"Current Location"])
+    {
+        cell.textLabel.text = divvyBike.name;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ bikes", divvyBike.availableBikes];
+    }
     
     return cell;
 }
@@ -70,8 +71,16 @@
     {
         if (location.verticalAccuracy < 500 && location.horizontalAccuracy < 500)
         {
-            self.location = location;
+
             [self.locationManager stopUpdatingLocation];
+            
+            // initialize a DivvyBike object for current location
+            
+            self.myLocationDivvy = [[DivvyBike alloc] init];
+            [self reverseGeocodeWithLocation:location forDivvyBike:self.myLocationDivvy];
+            self.myLocationDivvy.location = location;
+            self.myLocationDivvy.name = @"Current Location";
+            
             break;
         }
     }
@@ -109,13 +118,6 @@
         }
     }];
 
-    // initialize DivvyBike object for current location
-    
-    DivvyBike *currentLocationObject = [[DivvyBike alloc] init];
-    [self reverseGeocodeWithLocation:self.location forDivvyBike:currentLocationObject];
-    currentLocationObject.location = self.location;
-    currentLocationObject.name = @"Current Location";
-    [self.divvyBikes insertObject:currentLocationObject atIndex:0];
 }
 
 - (void)reverseGeocodeWithLocation:(CLLocation *)location forDivvyBike:(DivvyBike *)divvyBike
@@ -127,6 +129,15 @@
         divvyBike.mapItem = [[MKMapItem alloc] initWithPlacemark:(MKPlacemark *)placemark];
  
     }];
+}
+
+#pragma mark - segue life cycle
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:sender
+{
+    MapViewController *vc = segue.destinationViewController;
+    vc.divvyBike = self.divvyBikes[[self.tableView indexPathForSelectedRow].row];
+    vc.myLocationDivvy = self.myLocationDivvy;
 }
 
 

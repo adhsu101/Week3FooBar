@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DivvyBike.h"
 
 @interface MapViewController : UIViewController
+@property DivvyBike *divvyBike;
+@property DivvyBike *myLocationDivvy;
 
 @end

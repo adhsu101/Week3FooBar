@@ -26,7 +26,7 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </searchBar>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="gsd-AE-h5L" detailTextLabel="eri-8C-H8Q" rowHeight="100" style="IBUITableViewCellStyleSubtitle" id="TdW-st-Bf8">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="gsd-AE-h5L" detailTextLabel="eri-8C-H8Q" rowHeight="100" style="IBUITableViewCellStyleSubtitle" id="TdW-st-Bf8">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TdW-st-Bf8" id="O50-aE-uIy">
