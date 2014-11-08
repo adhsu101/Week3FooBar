@@ -14,7 +14,7 @@
 {
     self = [super init];
     self.name = divvyBikeD[@"stAddress1"];
-    self.availableBikes = divvyBikeD[@"availableBikes"];
+    self.availableBikes = [divvyBikeD[@"availableBikes"] stringValue];
 
     return self;
 }

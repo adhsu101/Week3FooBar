@@ -26,7 +26,7 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </searchBar>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="gsd-AE-h5L" detailTextLabel="eri-8C-H8Q" rowHeight="100" style="IBUITableViewCellStyleSubtitle" id="TdW-st-Bf8">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="gsd-AE-h5L" detailTextLabel="eri-8C-H8Q" rowHeight="100" style="IBUITableViewCellStyleSubtitle" id="TdW-st-Bf8" customClass="CustomTableViewCell">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TdW-st-Bf8" id="O50-aE-uIy">
@@ -34,7 +34,7 @@
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gsd-AE-h5L">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -44,9 +44,64 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9R6-h9-Prb">
+                                                    <rect key="frame" x="503" y="24" width="53" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="53" id="AkE-Ij-awi"/>
+                                                        <constraint firstAttribute="width" constant="53" id="epp-Cj-Lfn"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="AkE-Ij-awi"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="bikes" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMb-t7-NRt">
+                                                    <rect key="frame" x="515" y="59" width="41" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="41" id="Mt8-CF-4wf"/>
+                                                        <constraint firstAttribute="width" constant="41" id="YNc-vK-CpI"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="Mt8-CF-4wf"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="lMb-t7-NRt" firstAttribute="trailing" secondItem="9R6-h9-Prb" secondAttribute="trailing" id="5cE-BZ-F84"/>
+                                                <constraint firstItem="lMb-t7-NRt" firstAttribute="top" secondItem="O50-aE-uIy" secondAttribute="topMargin" constant="51" id="8H5-Bq-31t"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="9R6-h9-Prb" secondAttribute="bottom" constant="23.5" id="8pR-Uv-aY1"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="9R6-h9-Prb" secondAttribute="trailing" constant="3" id="IJ4-Yu-PLo"/>
+                                                <constraint firstItem="9R6-h9-Prb" firstAttribute="top" secondItem="O50-aE-uIy" secondAttribute="topMargin" constant="16" id="JsO-ff-bdb"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="lMb-t7-NRt" secondAttribute="bottom" constant="11.5" id="MiN-Y9-x5m"/>
+                                                <constraint firstItem="lMb-t7-NRt" firstAttribute="top" secondItem="O50-aE-uIy" secondAttribute="topMargin" constant="51" id="TLt-ZJ-BOF"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="9R6-h9-Prb" secondAttribute="trailing" constant="3" id="Z7S-nr-L2m"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="lMb-t7-NRt" secondAttribute="bottom" constant="11.5" id="Zuc-Zy-02l"/>
+                                                <constraint firstItem="9R6-h9-Prb" firstAttribute="trailing" secondItem="lMb-t7-NRt" secondAttribute="trailing" id="nqq-mr-HKL"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="9R6-h9-Prb" secondAttribute="bottom" constant="23.5" id="vh6-X6-moe"/>
+                                                <constraint firstItem="9R6-h9-Prb" firstAttribute="top" secondItem="O50-aE-uIy" secondAttribute="topMargin" constant="16" id="y3I-ll-vNi"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="IJ4-Yu-PLo"/>
+                                                    <exclude reference="nqq-mr-HKL"/>
+                                                    <exclude reference="vh6-X6-moe"/>
+                                                    <exclude reference="y3I-ll-vNi"/>
+                                                    <exclude reference="MiN-Y9-x5m"/>
+                                                    <exclude reference="TLt-ZJ-BOF"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="bikeAvailLabel" destination="9R6-h9-Prb" id="e5C-GH-UJM"/>
                                             <segue destination="ZMW-PU-gdT" kind="show" identifier="ToMapSegue" id="6Du-bU-HgY"/>
                                         </connections>
                                     </tableViewCell>

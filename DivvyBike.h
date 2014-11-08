@@ -18,6 +18,7 @@
 @property MKMapItem *mapItem;
 @property MKPlacemark *placemark;
 @property CLLocation *location;
+@property float distance;
 
 - (instancetype)initWithDictionary:(NSDictionary *)divvyBikeD;
 

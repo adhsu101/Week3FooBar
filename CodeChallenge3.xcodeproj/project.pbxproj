@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8DCDAD961A0D373300851A8E /* DivvyBike.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCDAD951A0D373300851A8E /* DivvyBike.m */; };
+		8DCDAD9A1A0DA09100851A8E /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCDAD991A0DA09100851A8E /* CustomTableViewCell.m */; };
 		938C35E919F02E16000F4F50 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 938C35E819F02E16000F4F50 /* main.m */; };
 		938C35EC19F02E16000F4F50 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 938C35EB19F02E16000F4F50 /* AppDelegate.m */; };
 		938C35F219F02E16000F4F50 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 938C35F019F02E16000F4F50 /* Main.storyboard */; };
@@ -32,6 +33,8 @@
 /* Begin PBXFileReference section */
 		8DCDAD941A0D373300851A8E /* DivvyBike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyBike.h; sourceTree = "<group>"; };
 		8DCDAD951A0D373300851A8E /* DivvyBike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyBike.m; sourceTree = "<group>"; };
+		8DCDAD981A0DA09100851A8E /* CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomTableViewCell.h; path = ../CustomTableViewCell.h; sourceTree = "<group>"; };
+		8DCDAD991A0DA09100851A8E /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomTableViewCell.m; path = ../CustomTableViewCell.m; sourceTree = "<group>"; };
 		938C35E319F02E16000F4F50 /* CodeChallenge3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeChallenge3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		938C35E719F02E16000F4F50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		938C35E819F02E16000F4F50 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -103,11 +106,13 @@
 			isa = PBXGroup;
 			children = (
 				938C35EB19F02E16000F4F50 /* AppDelegate.m */,
+				938C35EA19F02E16000F4F50 /* AppDelegate.h */,
 				938C360C19F02F62000F4F50 /* StationsListViewController.h */,
 				938C360D19F02F62000F4F50 /* StationsListViewController.m */,
 				938C360F19F02F6E000F4F50 /* MapViewController.h */,
 				938C361019F02F6E000F4F50 /* MapViewController.m */,
-				938C35EA19F02E16000F4F50 /* AppDelegate.h */,
+				8DCDAD981A0DA09100851A8E /* CustomTableViewCell.h */,
+				8DCDAD991A0DA09100851A8E /* CustomTableViewCell.m */,
 				938C35F319F02E16000F4F50 /* Images.xcassets */,
 				938C35F519F02E16000F4F50 /* LaunchScreen.xib */,
 				8DCDAD971A0D373900851A8E /* Model */,
@@ -244,6 +249,7 @@
 			files = (
 				938C360E19F02F62000F4F50 /* StationsListViewController.m in Sources */,
 				938C35EC19F02E16000F4F50 /* AppDelegate.m in Sources */,
+				8DCDAD9A1A0DA09100851A8E /* CustomTableViewCell.m in Sources */,
 				938C35E919F02E16000F4F50 /* main.m in Sources */,
 				938C361119F02F6E000F4F50 /* MapViewController.m in Sources */,
 				8DCDAD961A0D373300851A8E /* DivvyBike.m in Sources */,

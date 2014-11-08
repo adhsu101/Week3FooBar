@@ -9,17 +9,20 @@
 #import "StationsListViewController.h"
 #import "MapViewController.h"
 #import "DivvyBike.h"
+#import "CustomTableViewCell.h"
 
 #define kURL @"http://www.bayareabikeshare.com/stations/json"
+#define kMeterToMileDivisor 1609.34
 
 @interface StationsListViewController () <UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate>
 
 @property CLLocationManager *locationManager;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
-@property CLLocation *location;
 @property NSMutableArray *divvyBikes;
+@property NSMutableArray *sortedBikes;
 @property DivvyBike *myLocationDivvy;
+@property (strong, nonatomic) IBOutlet UILabel *availBikesLabel;
 
 @end
 
@@ -41,19 +44,16 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.divvyBikes.count;
+    return self.sortedBikes.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DivvyBike *divvyBike = self.divvyBikes[indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-
-    if (![divvyBike.name isEqualToString:@"Current Location"])
-    {
-        cell.textLabel.text = divvyBike.name;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ bikes", divvyBike.availableBikes];
-    }
+    DivvyBike *divvyBike = self.sortedBikes[indexPath.row];
+    CustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    cell.textLabel.text = divvyBike.name;
+    cell.bikeAvailLabel.text = divvyBike.availableBikes;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%0.1f miles", divvyBike.distance];
     
     return cell;
 }
@@ -112,9 +112,11 @@
                 DivvyBike *divvyBike = [[DivvyBike alloc] initWithDictionary:divvyBikeD];
                 divvyBike.location = location;
                 [self reverseGeocodeWithLocation:location forDivvyBike:divvyBike];
+                [self getDistanceTo:divvyBike];
+                
                 [self.divvyBikes addObject:divvyBike];
             }
-            [self.tableView reloadData];
+            [self sortByNearest];
         }
     }];
 
@@ -127,8 +129,40 @@
         CLPlacemark *placemark = placemarks.firstObject;
         divvyBike.placemark = (MKPlacemark *)placemark;
         divvyBike.mapItem = [[MKMapItem alloc] initWithPlacemark:(MKPlacemark *)placemark];
- 
     }];
+}
+
+- (void)getDistanceTo:(DivvyBike *)divvyBike
+{
+    CLLocationDistance distance = [divvyBike.location distanceFromLocation:self.myLocationDivvy.location];
+    float distanceInMiles = distance/kMeterToMileDivisor;
+    
+    divvyBike.distance = distanceInMiles;
+}
+
+- (void)sortByNearest
+{
+    self.sortedBikes = [[NSMutableArray alloc] init];
+    NSInteger indexLimit = self.divvyBikes.count;
+    
+    for (NSInteger x = 0; x < indexLimit; x++)
+    {
+        DivvyBike *nearbyBike = [[DivvyBike alloc] init];
+        nearbyBike = self.divvyBikes[0];
+        DivvyBike *compareLocation = self.divvyBikes[0];
+        for (int y = 0; y < self.divvyBikes.count; y++)
+        {
+            compareLocation = self.divvyBikes[y];
+            if (nearbyBike.distance > compareLocation.distance)
+            {
+                nearbyBike = compareLocation;
+            }
+        }
+        [self.sortedBikes addObject:nearbyBike];
+        [self.divvyBikes removeObject:nearbyBike];
+    }
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - segue life cycle
@@ -136,7 +170,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:sender
 {
     MapViewController *vc = segue.destinationViewController;
-    vc.divvyBike = self.divvyBikes[[self.tableView indexPathForSelectedRow].row];
+    vc.divvyBike = self.sortedBikes[[self.tableView indexPathForSelectedRow].row];
     vc.myLocationDivvy = self.myLocationDivvy;
 }
 
