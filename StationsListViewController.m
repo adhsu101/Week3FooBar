@@ -14,15 +14,15 @@
 #define kURL @"http://www.bayareabikeshare.com/stations/json"
 #define kMeterToMileDivisor 1609.34
 
-@interface StationsListViewController () <UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate>
+@interface StationsListViewController () <UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, UISearchBarDelegate>
 
 @property CLLocationManager *locationManager;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property NSMutableArray *divvyBikes;
 @property NSMutableArray *sortedBikes;
+@property NSMutableArray *searchExclusionArray;
 @property DivvyBike *myLocationDivvy;
-@property (strong, nonatomic) IBOutlet UILabel *availBikesLabel;
 
 @end
 
@@ -35,6 +35,7 @@
     [self.locationManager requestAlwaysAuthorization];
     self.locationManager.delegate = self;
     [self.locationManager startUpdatingLocation];
+    self.searchExclusionArray = [NSMutableArray array];
     [self loadJSON];
 
 }
@@ -57,6 +58,52 @@
     
     return cell;
 }
+
+#pragma mark - Search bar delegate methods
+
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+
+    //reset list
+    
+    if ([searchBar.text isEqualToString:@""])
+    {
+        [self.sortedBikes addObjectsFromArray:self.searchExclusionArray]; //TODO: does this work?
+        [self.searchExclusionArray removeAllObjects];
+    }
+    else
+    {
+        for (int x = 0; x < self.sortedBikes.count; x++)
+        {
+            DivvyBike *divvyBike = self.sortedBikes[x];
+            NSRange range = [divvyBike.name rangeOfString:searchBar.text];
+            if (range.length == 0)
+            {
+                [self.sortedBikes removeObject:divvyBike];
+                [self.searchExclusionArray addObject:divvyBike];
+                x--;
+            }
+        }
+
+        for (int x = 0; x < self.searchExclusionArray.count; x++)
+        {
+            DivvyBike *divvyBike = self.searchExclusionArray[x];
+            NSRange range = [divvyBike.name rangeOfString:searchBar.text];
+            if (range.length > 0)
+            {
+                [self.searchExclusionArray removeObject:divvyBike];
+                [self.sortedBikes addObject:divvyBike];
+                x--;
+            }
+        }
+    }
+    
+    [self.tableView reloadData];
+    NSLog(@"%@", searchBar.text);
+    
+}
+
 
 #pragma mark - Location Manager
 
@@ -117,6 +164,7 @@
                 [self.divvyBikes addObject:divvyBike];
             }
             [self sortByNearest];
+            [self.tableView reloadData];
         }
     }];
 
@@ -162,7 +210,6 @@
         [self.divvyBikes removeObject:nearbyBike];
     }
     
-    [self.tableView reloadData];
 }
 
 #pragma mark - segue life cycle
