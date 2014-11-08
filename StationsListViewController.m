@@ -20,7 +20,6 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property NSMutableArray *divvyBikes;
-@property NSMutableArray *sortedBikes;
 @property NSMutableArray *searchExclusionArray;
 @property DivvyBike *myLocationDivvy;
 
@@ -45,12 +44,12 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.sortedBikes.count;
+    return self.divvyBikes.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DivvyBike *divvyBike = self.sortedBikes[indexPath.row];
+    DivvyBike *divvyBike = self.divvyBikes[indexPath.row];
     CustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     cell.textLabel.text = divvyBike.name;
     cell.bikeAvailLabel.text = divvyBike.availableBikes;
@@ -69,18 +68,18 @@
     
     if ([searchBar.text isEqualToString:@""])
     {
-        [self.sortedBikes addObjectsFromArray:self.searchExclusionArray]; //TODO: does this work?
+        [self.divvyBikes addObjectsFromArray:self.searchExclusionArray]; //TODO: does this work?
         [self.searchExclusionArray removeAllObjects];
     }
     else
     {
-        for (int x = 0; x < self.sortedBikes.count; x++)
+        for (int x = 0; x < self.divvyBikes.count; x++)
         {
-            DivvyBike *divvyBike = self.sortedBikes[x];
+            DivvyBike *divvyBike = self.divvyBikes[x];
             NSRange range = [divvyBike.name rangeOfString:searchBar.text];
             if (range.length == 0)
             {
-                [self.sortedBikes removeObject:divvyBike];
+                [self.divvyBikes removeObject:divvyBike];
                 [self.searchExclusionArray addObject:divvyBike];
                 x--;
             }
@@ -93,12 +92,13 @@
             if (range.length > 0)
             {
                 [self.searchExclusionArray removeObject:divvyBike];
-                [self.sortedBikes addObject:divvyBike];
+                [self.divvyBikes addObject:divvyBike];
                 x--;
             }
         }
     }
     
+    [self sortByNearest];
     [self.tableView reloadData];
     NSLog(@"%@", searchBar.text);
     
@@ -190,25 +190,27 @@
 
 - (void)sortByNearest
 {
-    self.sortedBikes = [[NSMutableArray alloc] init];
+    NSMutableArray *arrayForSorting = [[NSMutableArray alloc] init];
     NSInteger indexLimit = self.divvyBikes.count;
     
     for (NSInteger x = 0; x < indexLimit; x++)
     {
-        DivvyBike *nearbyBike = [[DivvyBike alloc] init];
-        nearbyBike = self.divvyBikes[0];
+        DivvyBike *nearerBike = [[DivvyBike alloc] init];
+        nearerBike = self.divvyBikes[0];
         DivvyBike *compareLocation = self.divvyBikes[0];
         for (int y = 0; y < self.divvyBikes.count; y++)
         {
             compareLocation = self.divvyBikes[y];
-            if (nearbyBike.distance > compareLocation.distance)
+            if (nearerBike.distance > compareLocation.distance)
             {
-                nearbyBike = compareLocation;
+                nearerBike = compareLocation;
             }
         }
-        [self.sortedBikes addObject:nearbyBike];
-        [self.divvyBikes removeObject:nearbyBike];
+        [arrayForSorting addObject:nearerBike];
+        [self.divvyBikes removeObject:nearerBike];
     }
+
+    self.divvyBikes = arrayForSorting;
     
 }
 
@@ -217,7 +219,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:sender
 {
     MapViewController *vc = segue.destinationViewController;
-    vc.divvyBike = self.sortedBikes[[self.tableView indexPathForSelectedRow].row];
+    vc.divvyBike = self.divvyBikes[[self.tableView indexPathForSelectedRow].row];
     vc.myLocationDivvy = self.myLocationDivvy;
 }
 
